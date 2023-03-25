@@ -190,14 +190,14 @@ for (i = 0; i < textpad; i++) {
   kv = " " + kv;
 }
 
-console.log(colors.inverse('https://github.com/Seeroy/kubek-minecraft-dashboard'));
+console.log(colors.inverse('https://github.com/Probablew/Zetrox-Dashboard'));
 console.log(kv);
 console.log(" ");
 
 updater.checkForUpdates(function (upd, body) {
   if (upd != 0 && zetrox_version != upd) {
     console.log(additional.getTimeFormatted(), colors.yellow(translator.translateHTML("{{consolemsg-yesupd}}", cfg['lang'])));
-    console.log(additional.getTimeFormatted(), colors.yellow("https://github.com/Seeroy/kubek-minecraft-dashboard/releases/tag/" + upd));
+    console.log(additional.getTimeFormatted(), colors.yellow("https://github.com/Probablew/Zetrox-Dashboard/releases/tag/" + upd));
 
     assets = body[0].assets;
     downloaded = false;
@@ -213,7 +213,7 @@ updater.checkForUpdates(function (upd, body) {
 
     updatesByIntArray = {
       found: true,
-      url: "https://github.com/Seeroy/kubek-minecraft-dashboard/releases/tag/" + upd,
+      url: "https://github.com/Probablew/Zetrox-Dashboard/releases/tag/" + upd,
       downloaded: downloaded
     };
   } else {

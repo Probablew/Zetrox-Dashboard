@@ -3,7 +3,7 @@ var fs = require('fs');
 var config = require("./config");
 var cfg = config.readConfig();
 
-exports.zetroxLogo = " /$$                 /$$                 /$$      \n| $$                | $$                | $$      \n| $$   /$$ /$$   /$$| $$$$$$$   /$$$$$$ | $$   /$$\n| $$  /$$/| $$  | $$| $$__  $$ /$$__  $$| $$  /$$/\n| $$$$$$/ | $$  | $$| $$  \ $$| $$$$$$$$| $$$$$$/ \n| $$_  $$ | $$  | $$| $$  | $$| $$_____/| $$_  $$ \n| $$ \  $$|  $$$$$$/| $$$$$$$/|  $$$$$$$| $$ \  $$\n|__/  \__/ \______/ |_______/  \_______/|__/  \__/";
+exports.zetroxLogo = "  Zetrox Dashboard BÉTA v1.0.4  ";
 
 exports.getTimeFormatted = () => {
   date = new Date();
