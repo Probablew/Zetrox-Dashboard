@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<head>
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Zetrox Dashboard</title>
+
+  <!-- MDB -->
+  <script src="/js/mdb.min.js"></script>
+  <link rel="stylesheet" id="mdbLight" href="/css/mdb.min.css">
+  <link rel="stylesheet" media="none" id="mdbDark" href="/css/mdb.dark.min.css">
+
+  <!-- Theme modes -->
+  <link rel="stylesheet" id="linkLight" href="/css/modes/white.css">
+  <link rel="stylesheet" media="none" id="linkDark" href="/css/modes/dark.css">
+
+  <!-- Others -->
+  <script src="/js/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="/css/animate.min.css" />
+  <script src="/js/socket.io.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <link rel="stylesheet" href="/css/main.css">
+  <script src="/js/mineParse.js"></script>
+
+  <script src="js/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="/css/sweetalert.dark.css">
+
+  <script src="js/toastify-js.js"></script>
+  <link rel="stylesheet" href="css/toastify.min.css" />
+
+  <script src="/js/chart.umd.min.js"></script>
+
+  <!-- Own -->
+  <link rel="stylesheet" href="/css/globals.css" />
+  <script src="/js/funcs.js"></script>
+  <script src="/js/ui.functions.js"></script>
+
+  <!-- Icons and font -->
+  <link rel="stylesheet" href="/fonts/Inter/stylesheet.css" />
+  <link rel="stylesheet" href="/fonts/MaterialSymbols/stylesheet.css" />
+  <link rel="stylesheet" href="/fonts/RobotoMono/stylesheet.css" />
+
+  <!-- 
+    sidebar items:
+    #zetrox-version-sidebar
+    #servers-list-sidebar
+    #new-server-button
+  -->
+</head>
+
+<div class="card" id="update-process"
+  style="display: none; margin: auto; position: absolute; left: 0; right: 0; top: 0; bottom: 0; width: max-content; height: max-content; z-index: 999999999; min-width: 30%;">
+  <div class="card-body">
+    <p class="card-text">
+      Betöltés
+    </p>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
+        aria-valuemax="100"></div>
+    </div>
+  </div>
+</div>
+
+<body>
+  <div class="d-flex flex-row w-100 h-100">
+    <div class="menuContainer text-body d-flex flex-column animate__animated animate__slideInLeft animate__fast">
+      <div class="d-flex flex-row mb-3 align-items-center justify-content-center">
+        <div class="p-2">
+          <img src="assets/icon.png" height="56">
+        </div>
+        <div class="p-2 ms-3 zetroxLogoText">Zetrox DB</div>
+        <span id="zetrox-version-sidebar"></span>
+      </div>
+
+      <ul class="sidenavLayout list-group list-group-light flex-fill" id="sidebar-menu-list"
+        style="overflow-y: auto; margin-bottom: 12px;">
+        <li class="list-group-item px-4 d-flex flex-row align-items-center console-menu-item" data-page="console">
+          <span class="material-symbols-outlined">terminal</span>
+          <span class="ms-2">{{console}}</span>
+        </li>
+        <li class="list-group-item px-4 d-flex flex-row align-items-center plugins-menu-item" data-page="mods">
+          <span class="material-symbols-outlined">extension</span>
+          <span class="ms-2">{{plugins-and-mods}}</span>
+        </li>
+        <li class="list-group-item px-4 d-flex flex-row align-items-center fm-menu-item" data-page="file_manager">
+          <span class="material-symbols-outlined">folder_open</span>
+          <span class="ms-2">{{file-manager}}</span>
+        </li>
+        <li class="list-group-item px-4 d-flex flex-row align-items-center backups-menu-item" data-page="backups">
+          <span class="material-symbols-outlined">cloud_circle</span>
+          <span class="ms-2">{{backups-capt}}</span>
+        </li>
+        <li class="list-group-item px-4 d-flex flex-row align-items-center serversett-menu-item"
+          data-page="server_settings">
+          <span class="material-symbols-outlined">tune</span>
+          <span class="ms-2">{{server-settings}}</span>
+        </li>
+        <li class="list-group-item px-4 d-flex flex-row align-items-center zetroxsett-menu-item"
+          data-page="zetrox_settings">
+          <span class="material-symbols-outlined">settings_applications</span>
+          <span class="ms-2">{{zetrox-settings}}</span>
+        </li>
+        <li class="list-group-item px-4 d-flex flex-row align-items-center" data-page="sysmon">
+          <span class="material-symbols-outlined">monitoring</span>
+          <span class="ms-2">{{system-monitor}}</span>
+        </li>
+        <li class="list-group-item px-4 d-flex flex-row align-items-center logout-account-item" onclick="logoutUser()">
+          <span class="material-symbols-outlined">logout</span>
+          <span class="ms-2">{{logout-account}}</span>
+        </li>
+      </ul>
+
+      <ul class="sidenavLayout list-group list-group-light" id="servers-list-sidebar">
+        <li class="list-group-item px-4 d-flex flex-row align-items-center" id="new-server-button">
+          <span class="material-symbols-outlined">add</span>
+          <span class="ms-2 flex-fill">{{create-server}}</span>
+          <span class="material-symbols-outlined goicon">chevron_right</span>
+        </li>
+      </ul>
+
+      <ul class="nav nav-pills nav-justified mb-3" id="theme-mode-selector">
+        <li class="nav-item">
+          <a class="nav-link lighttheme-button" data-theme="light" data-mdb-toggle="pill">VILÁGOS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link darktheme-button" data-theme="dark" data-mdb-toggle="pill">SÖTÉT</a>
+        </li>
+      </ul>
+
+      <div class="dropdown">
+        <button class="dropdown-toggle kbk-input" type="button" id="langSelectButton" data-mdb-toggle="dropdown">
+          Nyelvek
+        </button>
+        <ul class="dropdown-menu" id="langSelectMenu">
+          <li><a class="dropdown-item" value="hu" data-lang="hu"><i class="flag flag-hu"></i>Magyar</a></li>
+          <li><a class="dropdown-item" value="ru" data-lang="ru"><i class="flag flag-ru"></i>Русский</a></li>
+          <li><a class="dropdown-item" value="en" data-lang="en"><i class="flag flag-us"></i>English</a></li>
+          <li><a class="dropdown-item" value="nl" data-lang="nl"><i class="flag flag-nl"></i>Dutch</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="content flex-fill" style="width: 1vh;"></div>
+  </div>
+
+  <div id="loading-overlay" class="w-100 h-100">
+    <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</body>
+
+<script>
+  console.log("[UI] Starting Zetrox UI...");
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  act = urlParams.get('act');
+  var old = "";
+  var selectedServer = "";
+  var socket = "";
+  var cs = true;
+  var connect_socket_error = false;
+  var old_bl_upd = 10;
+
+  function updateIsReady() {
+    Toastify({
+      text: "{{newupdate-installed}}",
+      duration: 5000,
+      close: false,
+      gravity: "top",
+      position: "left",
+      stopOnFocus: true,
+      className: "upd-toast",
+      style: {
+        background: "var(--mdb-success)",
+      }
+    }).showToast();
+  }
+
+  $(document).ready(function () {
+    $("#langSelectMenu li").click(function () {
+      newlang = $(this).find("a").data("lang");
+      $.get('/zetrox/config', function (data) {
+        data['lang'] = newlang;
+        $.get("/zetrox/saveConfig?data=" + encodeURI(JSON.stringify(data)), function (data) {
+          location.reload();
+        });
+      });
+    });
+    $.get("/auth/permissions", function (perms) {
+      if (!perms.includes("console")) {
+        $(".sidenavLayout .console-menu-item").removeClass("d-flex");
+        $(".sidenavLayout .console-menu-item").hide();
+      }
+      if (!perms.includes("plugins")) {
+        $(".sidenavLayout .plugins-menu-item").removeClass("d-flex");
+        $(".sidenavLayout .plugins-menu-item").hide();
+      }
+      if (!perms.includes("filemanager")) {
+        $(".sidenavLayout .fm-menu-item").removeClass("d-flex");
+        $(".sidenavLayout .fm-menu-item").hide();
+      }
+      if (!perms.includes("server_settings")) {
+        $(".sidenavLayout .serversett-menu-item").removeClass("d-flex");
+        $(".sidenavLayout .serversett-menu-item").hide();
+      }
+      if (!perms.includes("zetrox_settings")) {
+        $(".sidenavLayout .zetroxsett-menu-item").removeClass("d-flex");
+        $(".sidenavLayout .zetroxsett-menu-item").hide();
+      }
+      if (!perms.includes("backups")) {
+        $(".sidenavLayout .backups-menu-item").removeClass("d-flex");
+        $(".sidenavLayout .backups-menu-item").hide();
+      }
+    });
+    $.get('/zetrox/config', function (data) {
+      $("#langSelectButton").html($("#langSelectMenu li a[value=" + data.lang + "]").html());
+      if (data.auth == false) {
+        $(".sidenavLayout .logout-account-item").removeClass("d-flex");
+        $(".sidenavLayout .logout-account-item").hide();
+      }
+    });
+    if (typeof window.localStorage.currentTheme !== "undefined") {
+      if (window.localStorage.currentTheme == "dark") {
+        $("#theme-mode-selector .darktheme-button").addClass("active");
+        $("body").addClass("dark");
+        $("#linkDark")[0].media = '';
+        $("#mdbDark")[0].media = '';
+        $("#linkLight")[0].media = 'none';
+        $("#mdbLight")[0].media = 'none';
+      } else if (window.localStorage.currentTheme == "light") {
+        $("#theme-mode-selector .lighttheme-button").addClass("active");
+        $("body").removeClass("dark");
+        $("#linkDark")[0].media = 'none';
+        $("#mdbDark")[0].media = 'none';
+        $("#linkLight")[0].media = '';
+        $("#mdbLight")[0].media = '';
+      }
+    } else {
+      window.localStorage.setItem("currentTheme", "light");
+      $("#theme-mode-selector .lighttheme-button").addClass("active");
+      $("body").removeClass("dark");
+      $("#linkDark")[0].media = 'none';
+      $("#mdbDark")[0].media = 'none';
+      $("#linkLight")[0].media = '';
+      $("#mdbLight")[0].media = '';
+    }
+    $("#new-server-button").click(function () {
+      window.location = "/new.server.html";
+    });
+
+    $.get("/zetrox/updates/check", function (upd) {
+      if (upd.found == true) {
+        downloaded = upd.downloaded;
+        $.get("/tasks/progress", function (tasks) {
+          keys = Object.keys(tasks);
+          keys.forEach(function (key) {
+            value = tasks[key];
+            if (key == "update.tmp" && value == "ready" && downloaded == false) {
+              downloaded = true;
+            }
+          });
+          version = upd.url.split("/").pop();
+
+          if (downloaded == false) {
+            Toastify({
+              text: "{{newupdate-found-1}}" + version + "\n" + "{{newupdate-found-2}}",
+              duration: 5000,
+              close: false,
+              gravity: "top",
+              position: "left",
+              stopOnFocus: true,
+              className: "upd-toast",
+              style: {
+                background: "var(--mdb-primary)",
+              },
+              onClick: function () {
+                $(".upd-toast").remove();
+                $.get("/zetrox/updates/downloadLatest");
+              }
+            }).showToast();
+          } else {
+            updateIsReady();
+          }
+        });
+      }
+    });
+
+    $("#sidebar-menu-list .list-group-item").click(function () {
+      if ($("#servers-list-sidebar .list-group-item").length < 2) {
+        $("#sidebar-menu-list").hide();
+        $("#servers-list-sidebar").hide();
+        gotoPage("welcome");
+      } else {
+        pg = $(this).data("page");
+        gotoPage(pg);
+      }
+    });
+
+    $.get('/zetrox/version', function (data) {
+      $("#zetrox-version-sidebar").html(data.replace("v", "").trim());
+    });
+
+    $.get("/server/statuses", function (data) {
+      for (const [key, value] of Object.entries(data)) {
+        active = "";
+        if (window.localStorage.selectedServer == key) {
+          active = " active";
+        }
+        $("#servers-list-sidebar").prepend(
+          '<li class="list-group-item px-4 d-flex flex-row align-items-center' + active +
+          '" aria-current="true"><img src="/server/icon?server=' + key +
+          '" height="24"><span class="ms-2 flex-fill">' + key + '</span><img src="assets/statuses/' + value
+          .status +
+          '.png" class="server-status" height="24"><span class="material-symbols-outlined goicon">chevron_right</span></li>'
+        );
+      }
+      if (typeof window.localStorage.selectedServer !== "undefined" && thisServerExists(window.localStorage
+          .selectedServer)) {
+        selectedServer = window.localStorage.selectedServer;
+      } else {
+        if ($("#servers-list-sidebar .list-group-item").length >= 2) {
+          thiss = $("#servers-list-sidebar .list-group-item").eq(0);
+          serverName = $(thiss).children("span.ms-2.flex-fill").text();
+          window.localStorage.setItem("selectedServer", serverName);
+          window.location.reload();
+        }
+      }
+
+      $("#servers-list-sidebar .list-group-item").click(function () {
+        if ($(this)[0].id != "new-server-button") {
+          serverName = $(this).children("span.ms-2.flex-fill").text();
+          window.localStorage.setItem("selectedServer", serverName);
+          window.location.reload();
+        }
+      });
+
+      if ($("#servers-list-sidebar .list-group-item").length < 2) {
+        $("#sidebar-menu-list").hide();
+        $("#servers-list-sidebar").hide();
+        gotoPage("welcome");
+      } else {
+        if (typeof act !== "undefined" && act !== "undefined") {
+          console.log("[UI]", "act is not null, trying to load", act);
+          gotoPage(act, true);
+        } else {
+          console.log("[UI]", "act is null, loading console");
+          gotoPage("console", true);
+        }
+      }
+    });
+
+    socket = openSocket();
+    socket.on("handshake", function () {
+      console.log("[WS]", "WebSocket handshake successful");
+      if (connect_socket_error == true) {
+        hideLoading();
+        connect_socket_error = false;
+      }
+      afterSocketHandshake();
+    });
+    socket.on("disconnect", () => {
+      showLoading();
+      connect_socket_error = true;
+    });
+    socket.on("reconnect", () => {
+      hideLoading();
+    });
+    socket.on("connect_error", () => {
+      showLoading();
+      connect_socket_error = true;
+    });
+    socket.on("handleServerError", function (arg) {
+      console.log("[WS]", "Update handled: " + arg.type);
+      $.get("/zetrox/translate?text=" + arg.data, function (text) {
+        Toastify({
+          text: text,
+          duration: 10000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "center",
+          stopOnFocus: true,
+          style: {
+            background: "#dc4c64",
+            color: "white",
+          },
+          onClick: function () {}
+        }).showToast();
+      });
+    });
+    socket.on("handleUpdate", function (arg) {
+      console.log("[WS]", "Update handled: " + arg.type);
+      type = arg.type;
+      data = arg.data;
+      switch (type) {
+        case "console":
+          if ($(".console-container").length > 0 && data.server == window.localStorage.selectedServer && $(
+              "#autoupdateConsoleCheckbox").is(":checked")) {
+            split = data.data.split(/\r?\n/);
+            $("#console-text").html("");
+
+            split.forEach(function (line) {
+              line = mineParse(line.replaceAll("<", "&lt;")).parsed.innerHTML;
+
+              htmlObject = document.createElement('div');
+              htmlObject.innerHTML = line;
+              if (htmlObject.firstChild.firstChild != null) {
+                html_text = htmlObject.firstChild.firstChild.wholeText.replaceAll("<", "&lt;") + "<br>";
+                if (htmlObject.firstChild.style.color != "") {
+                  stl = "color:" + htmlObject.firstChild.style.color + ";";
+                } else {
+                  stl = "";
+                }
+                html_text = "<span style='" + stl + "'>" + html_text + "</span>";
+
+                $("#console-text").html($("#console-text").html() + html_text);
+              }
+            });
+            if ($("#autoscrollConsoleCheckbox").is(":checked")) {
+              $("#console-text").scrollTop($("#console-text")[0].scrollHeight);
+            }
+            hideLoading();
+          }
+          break;
+        case "usage":
+          updateMemoryAndCPUUsage_ui(data);
+          break;
+        case "servers":
+          if (cs == false) {
+            if (data[window.localStorage.selectedServer]['restartOnError'] == true && $("#resOnErrCheckbox")
+              .length > 0) {
+              $('#resOnErrCheckbox').prop('checked', true);
+            } else {
+              $('#resOnErrCheckbox').prop('checked', false);
+            }
+            cs = true;
+          }
+          updateServersStatuses_ui(data);
+          break;
+        case "backups_list":
+          if (data == "progress") {
+            cur = new Date().valueOf();
+            if (cur - 1000 > old_bl_upd) {
+              old_bl_upd = cur;
+              if ($("#backups-list").length > 0) {
+                refreshBackupsList();
+              }
+            }
+          } else {
+            if ($("#backups-list").length > 0) {
+              refreshBackupsList();
+            }
+          }
+          break;
+        case "query":
+          updateServerDataFromQuery_ui(data);
+          break;
+        case "downloadTasks":
+          keys = Object.keys(data);
+          keys.forEach(function (key) {
+            value = data[key];
+            if (key == "update.tmp" && value != "ready") {
+              $("#update-process").show();
+              showLoading();
+              $("#update-process .card-text").text("{{downing-core-sw}} update.tmp (" + value + "%)");
+              $("#update-process .progress-bar").css("width", value + "%");
+            } else if (key == "update.tmp" && value == "ready") {
+              $("#update-process").hide();
+              hideLoading();
+              updateIsReady();
+            }
+          });
+          break;
+      }
+    });
+
+    console.log("[UI]", "Document is ready");
+  });
+
+  $("#theme-mode-selector .nav-link").click(function () {
+    console.log("[UI]", "Changing theme...");
+    th = this;
+    if ($(th).data("theme") == "dark") {
+      window.localStorage.setItem("currentTheme", "dark");
+      $("body").addClass("dark");
+      $("#linkDark")[0].media = '';
+      $("#mdbDark")[0].media = '';
+      $("#linkLight")[0].media = 'none';
+      $("#mdbLight")[0].media = 'none';
+    }
+    if ($(th).data("theme") == "light") {
+      window.localStorage.setItem("currentTheme", "light");
+      $("body").removeClass("dark");
+      $("#linkDark")[0].media = 'none';
+      $("#mdbDark")[0].media = 'none';
+      $("#linkLight")[0].media = '';
+      $("#mdbLight")[0].media = '';
+    }
+  });
+
+  function thisServerExists(sn) {
+    r = false;
+    $("#servers-list-sidebar li").each(function () {
+      if ($(this).find(".ms-2").text() == sn) {
+        r = true;
+      }
+    });
+    return r;
+  }
+</script>

@@ -1,0 +1,128 @@
+<head>
+  <!-- Meta -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Zetrox</title>
+
+  <!-- MDB -->
+  <script src="/js/mdb.min.js"></script>
+  <link rel="stylesheet" href="/css/mdb.min.css">
+
+  <!-- Others -->
+  <script src="/js/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="/css/animate.min.css" />
+  <link rel="stylesheet" href="/css/toastify.min.css" />
+  <script src="/js/toastify-js.js"></script>
+
+  <!-- Own -->
+  <link rel="stylesheet" href="/css/globals.css" />
+  <script src="/js/funcs.js"></script>
+
+  <!-- Icons and font -->
+  <link rel="stylesheet" href="/fonts/Inter/stylesheet.css" />
+  <link rel="stylesheet" href="/fonts/MaterialSymbols/stylesheet.css" />
+</head>
+
+<body class="text-center">
+  <div class="window">
+    <img class="mb-4" style="align-self: start;" src="/assets/icon.png" width="64px">
+    <h3 class="mb-5 w-100" style="text-align: start;">Bejelentkezés</h3>
+
+    <input type="text" id="floatingInput" class="kbk-input w-100" placeholder="{{user}}" />
+
+    <input type="password" id="floatingPassword" class="kbk-input w-100 mt-4 mb-5" placeholder="{{password}}" />
+
+    <button class="btn btn-lg btn-primary shadow-0">{{signinbtn-login}}</button>
+  </div>
+</body>
+
+<style>
+  html,
+  body {
+    height: 100%;
+    background: white;
+  }
+
+  * {
+    color: black;
+    font-family: 'Inter';
+  }
+
+  .window {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: #f5f5f5;
+    width: 24%;
+    height: max-content;
+    min-height: 350px;
+    border-radius: 16px;
+    margin: auto;
+    padding: 64px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+
+  .kubekLogoText {
+    color: black;
+  }
+</style>
+
+<script>
+  $(document).ready(function () {
+    $(".btn").click(function () {
+      login = $("#floatingInput").val();
+      password = $("#floatingPassword").val();
+
+      $.ajax("/auth/login?login=" + login + "&password=" + password, {
+        type: "GET",
+        statusCode: {
+          200: function (response) {
+            if (response == "Wrong credetinals!") {
+              Toastify({
+                text: "{{wrong-cred-login}}",
+                duration: 2000,
+                newWindow: true,
+                close: false,
+                gravity: "top",
+                position: "center",
+                stopOnFocus: true,
+                style: {
+                  background: "var(--mdb-danger)",
+                }
+              }).showToast();
+            } else {
+              $("#autherror").hide();
+              window.location = "/";
+            }
+          },
+          429: function (response) {
+            Toastify({
+              text: "{{rate-limit-login}}",
+              duration: 1000,
+              newWindow: true,
+              close: false,
+              gravity: "top",
+              position: "center",
+              stopOnFocus: true,
+              style: {
+                background: "var(--mdb-warning)",
+              }
+            }).showToast();
+          }
+        },
+      });
+    });
+  });
+</script>

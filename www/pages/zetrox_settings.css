@@ -1,0 +1,25 @@
+.k-settings-container {
+  padding: 2%;
+  height: 92vh;
+}
+
+.k-settings-container .list-group-item {
+  padding: 16px 24px;
+}
+
+.k-settings-container .list-group-item .caption {
+  margin-left: 12px;
+}
+
+#users-list .card {
+  cursor: pointer;
+  height: 100%;
+}
+
+#users-list .col-xl-4.col-lg-6 {
+  margin-top: 10px;
+}
+
+#users-list .card .card-body {
+  display: flex;
+}
