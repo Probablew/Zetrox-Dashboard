@@ -7,6 +7,13 @@
   "scripts": {
     "start": "node app.js"
   },
+  "bin": "app.js",
+  "pkg": {
+    "scrips": "www/**/**/*.js, translations/*.js, routers/*.js, my_modules/*.js",
+    "assets": "www/**/**/*, translations/*, routers/*, my_modules/*",
+    "targets": [ "node16-linux-arm64" ],
+    "outputPath": "dist"
+  },
   "license": "ISC",
   "dependencies": {
     "archiver": "^4.0.2",
