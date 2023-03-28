@@ -13,7 +13,7 @@ exports.checkForUpdates = (cb) => {
     },
     json: true
   };
-  request.get("https://api.github.com/Probablew/Zetrox-Dashboard/releases", options, (error, res, body) => {
+  request.get("https://api.github.com/repos/Probablew/Zetrox-Dashboard/releases", options, (error, res, body) => {
     if (error) {
       return console.error(error);
     }
@@ -31,7 +31,7 @@ function checkForUpdates_fc(cb) {
     },
     json: true
   };
-  request.get("https://api.github.com/Probablew/Zetrox-Dashboard/releases", options, (error, res, body) => {
+  request.get("https://api.github.com/repos/Probablew/Zetrox-Dashboard/releases", options, (error, res, body) => {
     if (error) {
       return console.error(error);
     }
@@ -48,7 +48,7 @@ exports.setCheckingForUpdatesByInterval = (updatesInterval) => {
     checkForUpdates_fc(function (upd) {
       if (upd != 0 && zetrox_version != upd) {
         console.log(additional.getTimeFormatted(), colors.yellow(translator.translateHTML("{{consolemsg-yesupd}}", cfg['lang'])));
-        console.log(additional.getTimeFormatted(), colors.yellow("https://api.github.com/Probablew/Zetrox-Dashboard/releases/tag/" + upd));
+        console.log(additional.getTimeFormatted(), colors.yellow("https://api.github.com/repos/Probablew/Zetrox-Dashboard/releases/tag/" + upd));
 
         assets = body[0].assets;
         downloaded = false;
@@ -64,7 +64,7 @@ exports.setCheckingForUpdatesByInterval = (updatesInterval) => {
 
         updatesByIntArray = {
           found: true,
-          url: "https://api.github.com/Probablew/Zetrox-Dashboard/releases/tag/" + upd,
+          url: "https://api.github.com/repos/Probablew/Zetrox-Dashboard/releases/tag/" + upd,
           downloaded: dwn
         };
       } else {
@@ -84,7 +84,7 @@ exports.downloadLatestUpdate = function (cb) {
     },
     json: true
   };
-  request.get("https://api.github.com/Probablew/Zetrox-Dashboard/releases", options, (error, res, body) => {
+  request.get("https://api.github.com/repos/Probablew/Zetrox-Dashboard/releases", options, (error, res, body) => {
     if (error) {
       return console.error(error);
     }
