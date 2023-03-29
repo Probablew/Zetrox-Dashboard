@@ -161,9 +161,9 @@
   "{{downloading-compl-java-sw}}": "Java letöltése kész, kérlek várj...",
   "{{lookslike-ver-sw}}": "Úgy tűnik, hogy a szervered verziója ",
 
-  "{{java-incomp-error}}": "Lehetséges, hogy van olyan Java-verziója, amely nem kompatibilis a kiszolgáló ezen verziójával, a kiszolgáló beállításaiban módosíthatja a Java verzióját.",
-  "{{java-path-error}}": "A lehetséges kiszolgáló indítófájlja elavult információkat tartalmaz. Próbáljon meg belépni a szerver beállításaiba, és válassza ki a megfelelő Java verziót / módosítsa az aktuálisat",
-  "{{jarfile-access-error}}": "Ha a szerver nem indul el, előfordulhat, hogy az indításhoz szükséges kernelfájl nem található. Próbálja meg visszaadni a hiányzó fájlt, vagy létrehozza újra a szervert egy újon",
+  "{{java-incomp-error}}": "Lehetséges, hogy van olyan Java-verziója, amely nem kompatibilis ezzel szerver verziójával, a beállításokban módosítsd a Java verziót.",
+  "{{java-path-error}}": "A lehetséges indítófájlja elavult információkat tartalmaz. Próbálj meg belépni a szerver beállításaiba, és válasszd ki a megfelelő Java verziót / módosítsd az aktuálisat",
+  "{{jarfile-access-error}}": "Ha a szerver nem indul el, előfordulhat, hogy az indításhoz szükséges indítófájl nem található. Próbáld meg letölteni a hiányzó fájlt, vagy hozz létre újra a szervert",
 
   "{{consolemsg-update1h}}": "A zetrox óránként keres frissítéseket",
   "{{consolemsg-noupd}}": "Nem találhatóak frissítések",
