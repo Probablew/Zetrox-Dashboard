@@ -149,7 +149,7 @@ global.currentFileWritingsText = [];
 global.ftpserver;
 
 // Zetrox version
-global.zetrox_version = "v1.0.4";
+global.zetrox_version = "1.0.4";
 
 app.use(fileUpload());
 app.use(cookieParser());
